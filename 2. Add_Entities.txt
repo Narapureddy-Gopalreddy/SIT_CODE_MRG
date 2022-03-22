@@ -1,0 +1,42 @@
+using Microsoft.Azure.Cosmos.Table;
+using System;
+
+namespace AzureTable
+{
+    class Program
+    {
+        private static string connection_string = "DefaultEndpointsProtocol=https;AccountName=appstore10001;AccountKey=sYQfKURoo4VezuCn23vg0wtbI7/zCnq+ol8hIt7spJ+0rz6tv27Ko3Bl43IzVCu3TcnXi9cnU8Y2pHVfMy93/A==;EndpointSuffix=core.windows.net";
+        private static string table_name = "Customer";
+
+        static void Main(string[] args)
+        {
+            CloudStorageAccount _account = CloudStorageAccount.Parse(connection_string);
+
+            CloudTableClient _table_client = _account.CreateCloudTableClient();
+
+            CloudTable _table=_table_client.GetTableReference(table_name);
+
+            Customer _customer = new Customer("UserA", "Chicago", "C1");
+
+            TableOperation _operation = TableOperation.Insert(_customer);
+
+            TableResult _result=_table.Execute(_operation);
+
+            Console.WriteLine("Entity is added");
+
+            Console.ReadKey();
+        }
+    }
+
+class Customer :TableEntity
+    {
+        public string customername { get; set; }
+        public Customer(string _customername, string _city,string _customerid)
+        {
+            PartitionKey = _city;
+            RowKey = _customerid;
+            customername = _customername;
+        }
+    }
+
+}

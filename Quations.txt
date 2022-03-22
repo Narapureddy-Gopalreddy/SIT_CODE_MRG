@@ -1,0 +1,3 @@
+1. Length issue on trailer record for 12 files
+2. Dcocument file name and txt file names are different
+3. Field File_Name need to add in mapping document.
